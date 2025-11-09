@@ -20,7 +20,7 @@ const PORT = process.env.PORT || 5000;
 const __dirname = path.resolve(); // Resolves the current directory path
 
 // Middleware setup
-app.use(cors({ origin: process.env.CLIENT_URL || "*", credentials: true })); // Enable CORS dynamically based on the CLIENT_URL
+app.use(cors({ origin: "*", credentials: true })); // Enable CORS dynamically based on the CLIENT_URL
 app.use(express.json()); // Parse JSON request bodies
 app.use(cookieParser()); // Parse cookies
 
