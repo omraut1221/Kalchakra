@@ -5,7 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Header from "../components/Header";
 
-const API_URL = import.meta.env.MODE === "development" ? "http://localhost:5000/api/watch" : "/api/watch";
+const API_URL =  "https://kalchakra.onrender.com";
 
 const AddWatchPage = () => {
   const navigate = useNavigate();
