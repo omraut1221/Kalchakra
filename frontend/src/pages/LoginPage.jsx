@@ -1,0 +1,125 @@
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom"; // ✅ added useNavigate
+import { Mail, Lock, Loader, Clock } from "lucide-react";
+import { useAuthStore } from "../store/authStore";
+import Header from "../components/Header";
+
+const Input = ({ icon: Icon, ...props }) => (
+  <div className="relative mb-4">
+    <Icon
+      className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+      size={20}
+    />
+    <input
+      {...props}
+      className="w-full px-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gold"
+    />
+  </div>
+);
+
+const LoginPage = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate(); // ✅ navigation hook
+
+  const { login, isLoading, error } = useAuthStore();
+
+  // ✅ Modified login handler
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    try {
+      // Perform login through store (API call)
+      const response = await login(email, password);
+
+      // ✅ Store user info in localStorage
+      if (response?.user) {
+        localStorage.setItem("user", JSON.stringify(response.user));
+      }
+
+      // ✅ Redirect based on role
+      if (response?.user?.role === "admin") {
+        navigate("/dashboard");
+      } else {
+        navigate("/track-watch");
+      }
+    } catch (err) {
+      console.error("Login failed:", err);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-white text-black flex flex-col">
+      <Header />
+
+      <main className="flex-grow flex items-center justify-center px-4 py-12">
+        <div className="max-w-md w-full bg-white rounded-lg shadow-xl overflow-hidden">
+          <div className="p-8">
+            <h2 className="text-3xl font-bold mb-6 text-center text-gold">
+              Welcome Back
+            </h2>
+
+            <form onSubmit={handleLogin}>
+              <Input
+                icon={Mail}
+                type="email"
+                placeholder="Email Address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+
+              <Input
+                icon={Lock}
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+
+              <div className="flex items-center justify-between mb-6">
+                <Link to="/forgot-password" className="text-sm text-gold hover:underline">
+                  Forgot password?
+                </Link>
+              </div>
+
+              {error && <p className="text-red-600 font-semibold mb-4">{error}</p>}
+
+              <button
+                className="w-full bg-gold hover:bg-gold/80 text-black font-bold py-3 px-4 rounded-full border-2 border-black transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-black focus:ring-opacity-50"
+                type="submit"
+                disabled={isLoading}
+              >
+                {isLoading ? <Loader className="w-6 h-6 animate-spin mx-auto" /> : "Login"}
+              </button>
+            </form>
+          </div>
+
+          {/* Disclaimer Section */}
+          <div className="px-8 py-4 bg-white flex justify-center mt-4">
+            <p className="text-xs text-gray-600 text-center">
+              Admin access is granted under strict responsibility. Ensure you follow all guidelines
+              and policies when managing user data and access.
+            </p>
+          </div>
+
+          <div className="px-8 py-4 bg-gray-50 flex justify-center">
+            <p className="text-sm text-gray-600">
+              Don't have an account?{" "}
+              <Link to="/signup" className="text-gold hover:underline">
+                Sign up
+              </Link>
+            </p>
+          </div>
+        </div>
+      </main>
+
+      <footer className="bg-white border-t border-gray-200 py-4">
+        <div className="container mx-auto px-4 text-center text-sm text-gray-600">
+          © {new Date().getFullYear()} Kalchakra. All rights reserved.
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+export default LoginPage;
