@@ -13,7 +13,7 @@ const WatchCard = ({ watch, refresh }) => {
 
     try {
       await axios.put(
-        `${import.meta.env.VITE_API_URL}/api/watch/updateStatus/${watch.billNo}`,
+        `https://kalchakra.onrender.com/api/watch/updateStatus/${watch.billNo}`,
         { status: newStatus },
         { withCredentials: true }
       );

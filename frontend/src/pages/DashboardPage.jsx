@@ -17,6 +17,7 @@ const DashboardPage = () => {
   const { user, logout } = useAuthStore();
   const [watches, setWatches] = useState([]);
   const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL?.toLowerCase();
+  const API_URL="https://kalchakra.onrender.com";
 
   const handleLogout = () => logout();
 
@@ -24,7 +25,7 @@ const DashboardPage = () => {
   const fetchWatches = async () => {
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/watch/allWatchServices`,
+        `https://kalchakra.onrender.com/api/watch/allWatchServices`,
         { withCredentials: true }
       );
       setWatches(res.data.services || []);
@@ -37,7 +38,7 @@ const DashboardPage = () => {
   const handleStatusChange = async (billNo, newStatus) => {
     try {
       await axios.put(
-        `${import.meta.env.VITE_API_URL}/api/watch/updateStatus/${billNo}`,
+        `https://kalchakra.onrender.com/api/watch/updateStatus/${billNo}`,
         { status: newStatus },
         { withCredentials: true }
       );
@@ -56,7 +57,7 @@ const DashboardPage = () => {
 
     try {
       await axios.delete(
-        `${import.meta.env.VITE_API_URL}/api/watch/deleteWatch/${billNo}`,
+        `https://kalchakra.onrender.com/api/watch/deleteWatch/${billNo}`,
         { withCredentials: true }
       );
       alert(`Watch with Bill No ${billNo} deleted successfully.`);

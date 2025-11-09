@@ -45,7 +45,8 @@ app.listen(PORT, () => {
 cron.schedule('00 10 * * *', async () => {  // Runs every day at 10:30 PM IST
   console.log("Cron job started: Fetching upcoming estimated orders...");
   try {
-    const apiUrl = process.env.API_BASE_URL || 'http://localhost:5000'; // Default to local API for dev
+  // const API_URL="";
+    const apiUrl = "https://kalchakra.onrender.com"; // Default to local API for dev
     const response = await axios.get(`${apiUrl}/api/watch/getUpcomingEstimatedOrders`);
     console.log('Scheduled task response:', response.data); // Log the response data
   } catch (error) {
@@ -59,7 +60,7 @@ cron.schedule('00 10 * * *', async () => {  // Runs every day at 10:30 PM IST
 cron.schedule('00 10 1 * *', async () => {  // Runs every 1st day of the month at 10:30 PM IST
   console.log("Cron job started: Fetching delivered watches...");
   try {
-    const apiUrl = process.env.API_BASE_URL || 'http://localhost:5000'; // Default to local API for dev
+    const apiUrl = "https://kalchakra.onrender.com" ; // Default to local API for dev
     const response = await axios.get(`${apiUrl}/api/watch/deliveredWatches`);
     console.log('Scheduled task response (deliveredWatches):', response.data); // Log the response data
   } catch (error) {
